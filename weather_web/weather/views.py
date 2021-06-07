@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from django.views import generic
+from .models import Place
 
 
 class TestBaseView(generic.TemplateView):
-    template_name = 'weather_base.html'
+    template_name = 'weather/weather_base.html'
 
 
-class WeatherIndex(generic.TemplateView):
-    template_name = 'weather_index.html'
+class WeatherIndexView(generic.TemplateView):
+    template_name = 'weather/weather_index.html'
+
+
+class PlaceListView(generic.ListView):
+    model = Place
