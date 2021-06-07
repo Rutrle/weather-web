@@ -2,12 +2,14 @@
 
 {% block content %}
 
-<div class="bg-light p-5 rounded-lg m-3">
-  <h1 class="display-4">Welcome to the Weather Compare!</h1>
-  <p class="lead">Let's see all weather forecats at one! </p>
-  <hr class="my-4">
-  <p>There are multiple weather forecast services, but their predictions often differs, let's see them all at one place</p>
-  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+{% for place in place_list %}
+<div class='container'>
+  <div class='card text-dark bg-light mb-3'>
+    <div class='card-header'>
+      <h5 class="card-title">{{place.name}}</h5>
+    </div>
+    <p>Latitude: {{place.latitude}} Longtitude: {{place.longtitude}}</p>
+  </div>
 </div>
-
+{% endfor %}
 {% endblock content %}
