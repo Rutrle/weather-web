@@ -4,11 +4,11 @@
 
 {% for place in place_list %}
 <div class='container'>
-  <div class='card text-dark bg-light mb-3'>
+  <div class='card text-dark bg-light mb-4'>
     <div class='card-header'>
       <h5 class="card-title">{{place.name}}</h5>
     </div>
-    <p>Latitude: {{place.latitude}} Longtitude: {{place.longtitude}}</p>
+    <p><strong>Latitude:</strong> {{place.latitude}}<strong> Longtitude:</strong> {{place.longtitude}}</p>
   </div>
 </div>
 {% endfor %}

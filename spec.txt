@@ -7,10 +7,9 @@ info + possibility to contact web creators/admins. Detail page for places
 
 => place as a model, defined by name, longtitude and latitude
 
-stage 2:
-introduce users; allow users to set and save their displayed weather forecasts
+add users; allow users to set and save their displayed weather forecasts
 from different places. Allows users to set up a new places
 => stage 1 will work as a landing page for non-authorized users
 
-stage 3 (nice to have, further ideas):
+(nice to have, further ideas):
 possibility to set up an automated e-mail sending with weather information for users
