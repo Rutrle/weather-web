@@ -23,7 +23,17 @@
         <li class="nav-item">
           <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">About</a>
         </li>
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">register</a>
+        </li>
+        {% endif %}
       </ul>
+
+
 
     </div>
   </div>
