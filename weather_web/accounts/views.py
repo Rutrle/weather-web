@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from . import forms
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 
@@ -35,4 +35,8 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('weather:weather_index'))
+    return HttpResponseRedirect(reverse('accounts:goodbye'))
+
+
+class GoodbyeView(TemplateView):
+    template_name = 'accounts/goodbye.html'
