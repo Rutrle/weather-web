@@ -13,11 +13,3 @@ class UserCreateForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields["username"].label = "Username"
         self.fields["email"].label = "Email address"
-
-
-class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta():
-        model = User
-        fields = {'username', 'password'}

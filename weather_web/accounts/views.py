@@ -16,7 +16,6 @@ class SignUp(CreateView):
 
 
 def login_view(request):
-    form = forms.LoginForm()
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -29,7 +28,7 @@ def login_view(request):
         else:
             return HttpResponseRedirect(reverse('weather:weather_index'))
     else:
-        return render(request, 'accounts/login.html', {'form': form})
+        return render(request, 'accounts/login.html', {})
 
 
 @login_required
