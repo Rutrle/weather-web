@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from . import forms
 from django.views.generic import CreateView, TemplateView
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -16,6 +17,7 @@ class SignUp(CreateView):
 
 
 def login_view(request):
+    form = AuthenticationForm
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -26,9 +28,10 @@ def login_view(request):
             return HttpResponseRedirect(reverse('weather:weather_index'))
 
         else:
-            return HttpResponseRedirect(reverse('weather:weather_index'))
-    else:
-        return render(request, 'accounts/login.html', {})
+            messages.error(request, "Invalid username or password.")
+            # return render(request, 'accounts/login.html', {'form': form})
+
+    return render(request, 'accounts/login.html', {'form': form})
 
 
 @login_required

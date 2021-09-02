@@ -5,15 +5,23 @@
 <div class="container">
   <h1>Login</h1>
   <div class="container">
-    <form class = "mb-3" action="{% url 'accounts:login' %}" method="POST">
-        {% csrf_token %}
-        <label class="form-label" for="username">Username:</label>
-        <input class="form-control" type="text" name="username" placeholder="Enter Username">
-        <br>
 
-        <label class="form-label" for="password">Password:</label>
-        <input class="form-control" type="password" name="password">
-        <br>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+    <form class = "mb-3" action="{% url 'accounts:login' %}" method="POST">
+    {{ form.as_p }}
+        {% csrf_token %}
+              {% if form.errors %}
+    <p>Your username and password didn't match! Please try again.</p>
+    {% endif %}
 
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
