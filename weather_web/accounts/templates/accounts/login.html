@@ -2,19 +2,20 @@
 {% load bootstrap4 %}
 
 {% block content %}
-<div class="container">
-  <h1>Login</h1>
-  <div class="container">
+
+<div class="p-5 m-3">
+  <h1 class='display-2'>Login</h1>
+
+  <div class="container p-5 m-5 bg-light">
 
 
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-      <li class="{{ message.tags }}">{{ message }}</li>
+      <p class="text-danger">{{ message }}<p>
     {% endfor %}
 </ul>
 {% endif %}
-
 
     <form class = "mb-3" action="{% url 'accounts:login' %}" method="POST">
     {{ form.as_p }}
@@ -26,5 +27,6 @@
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
   </div>
+  <a class='a' href={% url 'accounts:signup'%}>Don't have an account? Register here!</a>
 </div>
 {% endblock content %}
