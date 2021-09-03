@@ -34,3 +34,8 @@ class PlaceCreateView(generic.CreateView, LoginRequiredMixin):
 
 class PlaceListView(generic.ListView):
     model = Place
+
+
+class PlaceDetailView(generic.DetailView):
+    template_name = "weather/place_detail.html"
+    model = Place
