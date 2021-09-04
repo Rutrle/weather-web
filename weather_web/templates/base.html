@@ -21,7 +21,7 @@
           <a class="nav-link active" aria-current="page" href="{% url 'weather:place_list' %}">Places</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">About</a>
+          <a class="nav-link active" href="{% url 'weather:about' %}" tabindex="-1" aria-disabled="true">About</a>
         </li>
         {% if not user.is_authenticated %}
         <li class="nav-item">

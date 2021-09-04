@@ -9,10 +9,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class TestBaseView(generic.TemplateView):
     template_name = 'weather/weather_base.html'
 
-
 class WeatherIndexView(generic.TemplateView):
     template_name = 'weather/weather_index.html'
 
+class AboutView(generic.TemplateView):
+    template_name = 'weather/about.html'
 
 class PlaceCreateView(generic.CreateView, LoginRequiredMixin):
     #form_class = PlaceForm
