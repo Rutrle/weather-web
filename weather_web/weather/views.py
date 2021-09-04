@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from .models import Place
 from .forms import PlaceForm
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -36,6 +36,13 @@ class PlaceListView(generic.ListView):
     model = Place
 
 
-class PlaceDetailView(generic.DetailView):
+class PlaceDetailView(generic.DetailView, LoginRequiredMixin):
     template_name = "weather/place_detail.html"
     model = Place
+
+
+class PlaceConfirmDeleteView(generic.DeleteView, LoginRequiredMixin):
+    template_name = "weather/place_delete.html"
+    model = Place
+
+    success_url = reverse_lazy('weather:place_list')

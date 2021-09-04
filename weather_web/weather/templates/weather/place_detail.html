@@ -2,8 +2,16 @@
 
 {% block content %}
 <p>{{place.name}}</p>
-<p>{{place.longtitude}}</p>
-<p>{{place.latitude}}</p>
-<p>{{place.author}}</p>
+<p>Longtitude {{place.longtitude}}</p>
+<p>Latitude: {{place.latitude}}</p>
+{% if place.author %}
+  <p> Author: {{place.author}}</p>
+{% endif %}
 <p>{{place.created_date}}</p>
+
+
+<div class='container p-3  col-md-4'>
+    <a href="{% url 'weather:place_create' %}"><button type="button" class="btn btn-primary">Edit</button></a>
+    <a href="{% url 'weather:place_remove' pk=place.pk %}"><button type="button" class="btn btn-primary">Remove</button></a>
+</div>
 {% endblock content %}
