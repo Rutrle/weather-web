@@ -21,14 +21,12 @@ class AboutView(generic.TemplateView):
 
 
 class PlaceCreateView(generic.CreateView, LoginRequiredMixin):
-    #form_class = PlaceForm
-    model = Place
-    fields = ('name', 'longtitude', 'latitude')
+    form_class = PlaceForm
 
     template_name = 'weather/place_create.html'
 
     def get_success_url(self):
-        return reverse('weather:weather_index')
+        return reverse('weather:place_detail', args=[self.object.pk])
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -59,6 +57,26 @@ def place_delete_view(request, pk):
             raise PermissionDenied
 
     return render(request, "weather/place_delete.html", )
+
+
+@login_required
+def place_update_view(request, pk):
+    place = get_object_or_404(Place, pk=pk)
+    form = PlaceForm(request.POST or None, instance=place)
+
+    context = {
+        'form': form
+    }
+
+    if request.method == "POST":
+        if place.author == request.user:
+            if form.is_valid():
+                form.save()
+            return redirect(reverse('weather:place_list'))
+        else:
+            raise PermissionDenied
+
+    return render(request, "weather/place_create.html", context)
 
 
 class PlaceUpdateView(generic.UpdateView, LoginRequiredMixin):
