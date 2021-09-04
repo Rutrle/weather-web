@@ -46,3 +46,12 @@ class PlaceConfirmDeleteView(generic.DeleteView, LoginRequiredMixin):
     model = Place
 
     success_url = reverse_lazy('weather:place_list')
+
+class PlaceUpdateView(generic.UpdateView,LoginRequiredMixin):
+    model=Place
+    fields = ('name', 'longtitude', 'latitude')
+
+    template_name = 'weather/place_create.html'
+
+    def get_success_url(self):
+        return reverse('weather:place_list')    

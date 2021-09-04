@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, PlaceDetailView, PlaceConfirmDeleteView
+from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, PlaceDetailView, PlaceConfirmDeleteView, PlaceUpdateView
 
 app_name = 'weather'
 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('places/<int:pk>/detail', PlaceDetailView.as_view(), name='place_detail'),
     path('places/<int:pk>/remove',
          PlaceConfirmDeleteView.as_view(), name='place_remove'),
+    path('places/<int:pk>/edit', PlaceUpdateView.as_view(), name='place_edit')
 ]
