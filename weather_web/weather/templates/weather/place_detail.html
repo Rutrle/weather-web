@@ -11,7 +11,12 @@
 
 
 <div class='container p-3  col-md-4'>
-    <a href="{% url 'weather:place_edit' pk=place.pk %}"><button type="button" class="btn btn-primary">Edit</button></a>
-    <a href="{% url 'weather:place_remove' pk=place.pk %}"><button type="button" class="btn btn-primary">Remove</button></a>
+  {% if user == place.author %}
+      <button onclick="location.href='{% url 'weather:place_edit' pk=place.pk %}'" type="button" class="btn btn-primary">Edit</button>
+      <button onclick="location.href='{% url 'weather:place_remove' pk=place.pk %}'" type="button" class="btn btn-primary">Remove</button>
+  {% else %} 
+    <span title="Only author can edit or remove place"><button type="button" class="btn btn-primary" disabled>Edit</button>
+    <button type="button" class="btn btn-primary" disabled>Remove</button></span>
+  {% endif %}
 </div>
 {% endblock content %}
