@@ -97,8 +97,9 @@ class PlaceUpdateView(generic.UpdateView, LoginRequiredMixin):
 def weather_forecast_test_view(request):
     print('praha')
     try:
-        data = GetWeatherForecasts('Praha')
-        print(data)
+        weather_forecast = GetWeatherForecasts('Praha')
+        weather_data = weather_forecast.weather_data
+        print(weather_data)
     except:
         pass
 
@@ -120,49 +121,41 @@ class GetWeatherForecasts:
         '''
         temperatures_openweather, dates_openweather = self.get_data_openweather(
             place)
-        temperatures_in_pocasi, dates_in_pocasi = self.get_in_pocasi_data(
-            place)
         temperatures_yr, dates_yr = self.get_yr_data(
             place)
 
         weather_data = self.prepare_weather_data(
-            dates_openweather, temperatures_openweather, dates_in_pocasi, temperatures_in_pocasi, temperatures_yr, dates_yr)
-        print(weather_data)
+            dates_openweather, temperatures_openweather, temperatures_yr, dates_yr)
+        # print(weather_data)
         weather_data = self.fill_in_vectors(
             weather_data, weather_data['length'])
 
         return weather_data
 
-    def prepare_weather_data(self, dates_openweather, temperatures_openweather, dates_in_pocasi, temperatures_in_pocasi, temperatures_yr, dates_yr):
+    def prepare_weather_data(self, dates_openweather, temperatures_openweather, temperatures_yr, dates_yr):
         '''
         prepares weather data from different sources into one dictionary weather_data, which it returns
         :param dates_openweather: list
         :param temperatures_openweather: list
-        :param dates_in_pocasi: list
-        :param temperatures_in_pocasi: list
         :param temperatures_yr: list
         :param dates_yr: list
         '''
         weather_data = {}
 
-        max_length = max(len(dates_in_pocasi), len(
+        max_length = max(len(
             dates_openweather), len(dates_yr))
         print(max_length)
 
         if max_length == len(dates_yr):
             weather_data['dates'] = dates_yr
-        elif max_length == len(dates_in_pocasi):
-            weather_data['dates'] = dates_in_pocasi
         else:
-            weather_data['dates'] = dates_in_pocasi
+            weather_data['dates'] = dates_openweather
 
         weather_data['temperatures_openweather'] = temperatures_openweather
-        weather_data['temperatures_in_pocasi'] = temperatures_in_pocasi
         weather_data['temperatures_yr'] = temperatures_yr
         weather_data['length'] = max_length
 
         weather_data['dates_openweather'] = dates_openweather
-        weather_data['dates_in_pocasi'] = dates_in_pocasi
         weather_data['dates_yr'] = dates_yr
 
         return weather_data
@@ -263,47 +256,9 @@ class GetWeatherForecasts:
 
         return temperatures, dates
 
-    def get_in_pocasi_data(self, place):
-        '''
-        get weather forecast data for given place from in Počasí website and returns temperatures and dates lists
-        :param place: str
-        '''
-        urls = {'Praha': 'https://www.in-pocasi.cz/predpoved-pocasi/cz/praha/praha-324',
-                'Kvilda': 'https://www.in-pocasi.cz/predpoved-pocasi/cz/jihocesky/kvilda-4588/',
-                'Brno': 'https://www.in-pocasi.cz/predpoved-pocasi/cz/jihomoravsky/brno-25/',
-                'Nová Paka': 'https://www.in-pocasi.cz/predpoved-pocasi/cz/kralovehradecky/nova-paka-271/'}
-
-        url = urls[place]
-        api_request = requests.get(url)
-        soup = BeautifulSoup(api_request.content, 'html.parser')
-
-        temperatures, dates = [], []
-
-        actual_temp = soup.find(class_='alfa mb-1')
-        actual_temp = actual_temp.text
-        actual_temp = re.findall("-* *\d*\d\.*\d*", actual_temp)
-        temperatures.append(float(actual_temp[0]))
-        dates.append(datetime.date.today().strftime('%d. %m.'))
-
-        indexes = ['day'+str(i) for i in range(1, 8)]
-        for i in range(len(indexes)):
-            try:
-                results = soup.find(id=indexes[i])
-                results = results.find(class_="mt-1 strong")
-                results = float(
-                    (re.findall("-* *\d*\d\.*\d*", results.text))[0])
-                temperatures.append(results)
-                date = datetime.date.today() + datetime.timedelta(days=(i+1))
-                dates.append(date.strftime('%d. %m.'))
-
-            except AttributeError:
-                print(f"{indexes[i]} index was not found")
-
-        return temperatures, dates
-
     def fill_in_vectors(self, weather_data, length):
         '''
-        uses fill_in_vector method to fill in lists in weather_data to length 
+        uses fill_in_vector method to fill in lists in weather_data to length
         :param weather_data: dict
         '''
         for key in weather_data:
