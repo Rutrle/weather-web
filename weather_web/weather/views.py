@@ -48,7 +48,7 @@ class PlaceListView(generic.ListView):
 @login_required
 def place_detail_view(request, pk):
     place = get_object_or_404(Place, pk=pk)
-    weather_data = GetWeatherForecasts('Praha')
+    weather_data = GetWeatherForecasts(place.longtitude, place.latitude)
     print(weather_data.weather_data)
     context = {'place': place,
                'dates': weather_data.weather_data['dates'],
@@ -119,18 +119,18 @@ class GetWeatherForecasts:
     class for getting weather forecast from multiple sources
     """
 
-    def __init__(self, place):
-        self.weather_data = self.get_weather_data(place)
+    def __init__(self, longtitude, latitude):
+        self.weather_data = self.get_weather_data(longtitude, latitude)
 
-    def get_weather_data(self, place):
+    def get_weather_data(self, longtitude, latitude):
         '''
         collects weather data for given place from all sources and returns them in dictionary of lists
         :param place: str
         '''
         temperatures_openweather, dates_openweather = self.get_data_openweather(
-            place)
+            longtitude, latitude)
         temperatures_yr, dates_yr = self.get_yr_data(
-            place)
+            longtitude, latitude)
 
         weather_data = self.prepare_weather_data(
             dates_openweather, temperatures_openweather, temperatures_yr, dates_yr)
@@ -168,18 +168,16 @@ class GetWeatherForecasts:
 
         return weather_data
 
-    def get_data_openweather(self, place):
+    def get_data_openweather(self, longtitude, latitude):
         '''
         get weather forecast data from openweather api and returns temperatures and dates lists
         :param place: str
         '''
 
-        token = '3826180b6619b9e8655cd67a2fa30f52'
-        url = 'http://api.openweathermap.org/data/2.5/forecast'
+        api_key = '3826180b6619b9e8655cd67a2fa30f52'
+        url = f' http://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longtitude}&appid={api_key}'
 
         parameters = {
-            'APIKEY': token,
-            'q': place,
             'units': 'metric'
         }
 
@@ -227,20 +225,13 @@ class GetWeatherForecasts:
 
         return max_day_temperatures, prepared_dates
 
-    def get_yr_data(self, place):
+    def get_yr_data(self, longtitude, latitude):
         '''
         get weather forecast data from yr weather api from selected place and returns temperatures and dates lists
         :param place: str
         '''
-        ['Praha', 'Brno', 'Kvilda', 'Nová Paka']
-        latslongs = {
-            'Praha': {'lat': 50.5, 'long': 14.25},
-            'Brno': {'lat': 49.20, 'long': 16.60},
-            'Kvilda': {'lat': 49.02, 'long': 13.58},
-            'Nová Paka': {'lat': 50.49, 'long': 15.52}
-        }
 
-        url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latslongs[place]['lat']}&lon={latslongs[place]['long']}"
+        url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}&lon={longtitude}"
         header = {
             "Accept": 'application/json',
             'User-Agent': 'weather app tryout https://github.com/Rutrle/Weather-app'
