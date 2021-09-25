@@ -21,8 +21,8 @@
 </div>
 
 
-  <div id="container" style="width: 75%;">
-    <canvas id="pie-chart"></canvas>
+  <div id="container" style="width: 50%;">
+    <canvas id="forecast-chart"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
@@ -32,25 +32,56 @@
       type: 'line',
       data: {
         datasets: [{
-          data: [7,8,8,9,9,9,10,11,14,14,15],
+          data: {{temperatures_yr|safe}},
           backgroundColor: [
-            "rgba(0,0,0,1.0)"
+            "red"
           ],
-          borderColor: "rgba(0,0,0,0.1)",
+          borderColor: "red",
           fill: false,
-          label: 'Weather forecast'
-        }],
-        labels: [50,60,70,80,90,100,110,120,130,140,150]
+          label: 'Temperatures Yr.no'
+          },
+          {
+          data: {{temperatures_openweather|safe}},
+          backgroundColor: [
+            "green"
+          ],
+          borderColor: "green",
+          fill: false,
+          label: 'Temperatures Openweather'
+          },
+        ],
+        labels: {{dates|safe}}
       },
       options: {
-        responsive: true
+        responsive: true,
+            scales: {
+        y: {
+          grid:{
+            borderColor:"black"
+            },          
+          title: {
+            text:'°C',
+            display: true}
+        },
+        x: {
+          grid:{
+            borderColor:"black"
+            },
+          title: {
+            text:'dates',
+            display: true
+            }
+        }
+    }
+        
       }
     };
 
     window.onload = function() {
-      var ctx = document.getElementById('pie-chart').getContext('2d');
+      var ctx = document.getElementById('forecast-chart').getContext('2d');
       window.myPie = new Chart(ctx, config);
     };
 
   </script>
+  
 {% endblock content %}

@@ -45,15 +45,23 @@ class PlaceListView(generic.ListView):
     model = Place
 
 
-class PlaceDetailView(generic.DetailView, LoginRequiredMixin):
-    template_name = "weather/place_detail.html"
-    model = Place
+@login_required
+def place_detail_view(request, pk):
+    place = get_object_or_404(Place, pk=pk)
+    weather_data = GetWeatherForecasts('Praha')
+    print(weather_data.weather_data)
+    context = {'place': place,
+               'dates': weather_data.weather_data['dates'],
+               'temperatures_yr': weather_data.weather_data['temperatures_yr'],
+               'temperatures_openweather': weather_data.weather_data['temperatures_openweather']
+               }
+
+    return render(request, "weather/place_detail.html", context)
 
 
 @login_required
 def place_delete_view(request, pk):
     place = get_object_or_404(Place, pk=pk)
-
     if request.method == "POST":
         if place.author == request.user:
             place.delete()
