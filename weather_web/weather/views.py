@@ -46,6 +46,15 @@ class PlaceListView(generic.ListView):
 
 
 @login_required
+def my_place_list_view(request):
+    queryset = Place.objects.filter(author=request.user)
+    print(queryset)
+    context = {'place_list': queryset}
+
+    return render(request, "weather/my_place_list.html", context)
+
+
+@login_required
 def place_detail_view(request, pk):
     place = get_object_or_404(Place, pk=pk)
     weather_data = GetWeatherForecasts(place.longtitude, place.latitude)

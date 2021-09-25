@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, place_detail_view, place_update_view, AboutView, place_delete_view, weather_forecast_test_view
+from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, place_detail_view, place_update_view, AboutView, place_delete_view, weather_forecast_test_view, my_place_list_view
 
 app_name = 'weather'
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('places/<int:pk>/remove',
          place_delete_view, name='place_remove'),
     path('places/<int:pk>/edit', place_update_view, name='place_edit'),
-    path('weather_test', weather_forecast_test_view, name='weather_test')
+    path('weather_test', weather_forecast_test_view, name='weather_test'),
+    path('places/my', my_place_list_view, name='my_place_list')
 ]
