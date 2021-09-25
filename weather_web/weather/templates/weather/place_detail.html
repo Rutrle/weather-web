@@ -1,30 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>{{place.name}}</p>
-<p>Longtitude {{place.longtitude}}</p>
-<p>Latitude: {{place.latitude}}</p>
-{% if place.author %}
-  <p> Author: {{place.author}}</p>
-{% endif %}
-<p>{{place.created_date}}</p>
-
-
-<div class='container p-3  col-md-4'>
-  {% if user == place.author %}
-      <button onclick="location.href='{% url 'weather:place_edit' pk=place.pk %}'" type="button" class="btn btn-primary">Edit</button>
-      <button onclick="location.href='{% url 'weather:place_remove' pk=place.pk %}'" type="button" class="btn btn-primary">Remove</button>
-  {% else %} 
-    <span title="Only author can edit or remove place"><button type="button" class="btn btn-primary" disabled>Edit</button>
-    <button type="button" class="btn btn-primary" disabled>Remove</button></span>
+<div class="container row p-5">
+  <div class="col-md-6">
+  <p>{{place.name}}</p>
+  <p>Longtitude {{place.longtitude}}</p>
+  <p>Latitude: {{place.latitude}}</p>
+  {% if place.author %}
+    <p> Author: {{place.author}}</p>
   {% endif %}
-</div>
-
-
-  <div id="container" style="width: 50%;">
-    <canvas id="forecast-chart"></canvas>
+  <p>{{place.created_date}}</p>
   </div>
 
+  <div class="col-md-6" style="width: 50%;">
+    <canvas id="forecast-chart"></canvas>
+  </div>
+</div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
   <script>
 
@@ -83,5 +74,15 @@
     };
 
   </script>
+
+<div class='container p-3  col-md-4'>
+  {% if user == place.author %}
+      <button onclick="location.href='{% url 'weather:place_edit' pk=place.pk %}'" type="button" class="btn btn-primary">Edit</button>
+      <button onclick="location.href='{% url 'weather:place_remove' pk=place.pk %}'" type="button" class="btn btn-primary">Remove</button>
+  {% else %} 
+    <span title="Only author can edit or remove place"><button type="button" class="btn btn-primary" disabled>Edit</button>
+    <button type="button" class="btn btn-primary" disabled>Remove</button></span>
+  {% endif %}
+</div>
   
 {% endblock content %}

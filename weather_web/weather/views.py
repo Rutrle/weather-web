@@ -170,8 +170,9 @@ class GetWeatherForecasts:
 
     def get_data_openweather(self, longtitude, latitude):
         '''
-        get weather forecast data from openweather api and returns temperatures and dates lists
-        :param place: str
+        get weather forecast data for given longtitude and latitude from openweather api and returns temperatures and dates lists
+        :param longtitude: float
+        :param latitude: float
         '''
 
         api_key = '3826180b6619b9e8655cd67a2fa30f52'
@@ -227,8 +228,9 @@ class GetWeatherForecasts:
 
     def get_yr_data(self, longtitude, latitude):
         '''
-        get weather forecast data from yr weather api from selected place and returns temperatures and dates lists
-        :param place: str
+        get weather forecast data from yr weather api for given latitude and longtitude and returns temperatures and dates lists
+        :param longtitude: float
+        :param latitude: float
         '''
 
         url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={latitude}&lon={longtitude}"
@@ -259,6 +261,7 @@ class GetWeatherForecasts:
         '''
         uses fill_in_vector method to fill in lists in weather_data to length
         :param weather_data: dict
+        :param length: int
         '''
         for key in weather_data:
             if isinstance(weather_data[key], list):

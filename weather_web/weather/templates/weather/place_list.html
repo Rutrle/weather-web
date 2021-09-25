@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<div class='container p-3  col-md-4'>
+    <a href="{% url 'weather:place_create' %}"><button type="button" class="btn btn-primary">Add new place!</button></a>
+    <a href="{% url 'weather:place_create' %}"><button type="button" class="btn btn-primary">My places</button></a>
+</div>
+
 <div class='container p-3  col-md-6'>
 {% for place in place_list %}
   <div class='container'>
