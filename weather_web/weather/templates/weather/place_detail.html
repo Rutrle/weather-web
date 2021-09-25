@@ -3,13 +3,13 @@
 {% block content %}
 <div class="container row p-5">
   <div class="col-md-6">
-  <p>{{place.name}}</p>
+  <h2>{{place.name}}</h2>
   <p>Longtitude {{place.longtitude}}</p>
   <p>Latitude: {{place.latitude}}</p>
   {% if place.author %}
     <p> Author: {{place.author}}</p>
   {% endif %}
-  <p>{{place.created_date}}</p>
+  <p>created: {{place.created_date}}</p>
   </div>
 
   <div class="col-md-6" style="width: 50%;">
