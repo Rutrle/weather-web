@@ -193,17 +193,18 @@ class GetWeatherForecasts:
 
         api_request = requests.get(url, params=parameters)
         api_request = api_request.json()
-
+        print(api_request)
         dates, temperatures = [], []
         for item in api_request['list']:
             date = item['dt']
             temperature = item['main']['temp']
 
             date = datetime.datetime.fromtimestamp(date)
+            print(date)
 
             dates.append(date)
             temperatures.append(temperature)
-
+        print('open', temperatures, dates)
         temperatures, dates = self.prepare_api_data(
             temperatures, dates)
 

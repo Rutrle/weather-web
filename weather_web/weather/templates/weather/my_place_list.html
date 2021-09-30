@@ -14,7 +14,7 @@
       <div class='card-header'>
         <a href="{% url 'weather:place_detail' pk=place.pk %}" ><h5 class="card-title">{{place.name}}</h5></a>
       </div>
-      <p><strong>Latitude:</strong> {{place.latitude}}<strong> <br> Longtitude:</strong> {{place.longtitude}}</p>
+      <p class="p-3"><strong>Latitude:</strong> {{place.latitude}}<strong> <br> Longtitude:</strong> {{place.longtitude}}</p>
     </div>
   </div>
 {% endfor %}
