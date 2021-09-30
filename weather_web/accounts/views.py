@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from . import forms
@@ -10,10 +10,17 @@ from django.contrib import messages
 # Create your views here.
 
 
-class SignUp(CreateView):
-    form_class = forms.UserCreateForm
-    success_url = reverse_lazy("login")
-    template_name = "accounts/signup.html"
+def sign_up_view(request):
+    user_form = forms.UserCreateForm
+    if request.method == 'POST':
+        user_form = user_form(request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+            return redirect("login")
+
+    context = {'form': user_form}
+    return render(request, "accounts/signup.html", context)
 
 
 def login_view(request):
