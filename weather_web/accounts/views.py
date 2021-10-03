@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from . import forms
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import TemplateView
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -17,6 +17,12 @@ def sign_up_view(request):
 
         if user_form.is_valid():
             user_form.save()
+            user_preference_form = forms.UserPreferenceForm
+            user_preference_form = user_preference_form(request.POST)
+            preferences = user_preference_form.save(commit=False)
+            preferences.user = request.user
+            preferences.save()
+
             return redirect("login")
 
     context = {'form': user_form}
