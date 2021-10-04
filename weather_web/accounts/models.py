@@ -5,16 +5,11 @@ from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
 
 
-class User(auth.models.User, auth.models.PermissionsMixin):
-    def __str__(self):
-        return "@{}".format(self.username)
-
-
 class UserPreference(models.Model):
     degrees_choices = [('C', 'Celsius'),
                        ('F', 'Fahrenheit')
                        ]
-    user = models.OneToOneField(auth.models.User, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     degrees = models.CharField(
         max_length=255, choices=degrees_choices, default='C')
 
