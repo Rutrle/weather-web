@@ -17,12 +17,11 @@ def sign_up_view(request):
 
         if user_form.is_valid():
             user_form.save()
-            user_preference_form = forms.UserPreferenceForm
-            user_preference_form = user_preference_form(request.POST)
-            preferences = user_preference_form.save(commit=False)
-            preferences.user = request.user
-            preferences.save()
-
+            #user_preference_form = forms.UserPreferenceForm
+            #user_preference_form = user_preference_form(request.POST)
+            #preferences = user_preference_form.save(commit=False)
+            #preferences.user = request.user
+            # preferences.save()
             return redirect("login")
 
     context = {'form': user_form}
