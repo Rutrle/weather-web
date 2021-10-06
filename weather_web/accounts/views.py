@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
+from .models import UserPreference
 from . import forms
 from django.views.generic import TemplateView
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
@@ -39,6 +40,20 @@ def login_view(request):
 
 
 @login_required
+def user_preference_update_view(request):
+    user = get_object_or_404(get_user_model(), username=request.user.username)
+    preference = get_object_or_404(UserPreference, user=user)
+
+    print(user.username)
+    print(preference.user.username)
+
+    context = {'user': user.username
+
+               }
+    return render(request, 'accounts/edit.html', context)
+
+
+@ login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('accounts:goodbye'))
