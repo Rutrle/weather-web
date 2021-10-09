@@ -6,6 +6,10 @@
 
 <div class="container">
     <h1>{{user}}</h1>
+        {{ form.as_p }}
+        {% csrf_token %}
+        {{ form2.as_p }}
+        {% csrf_token %}
 </div>
 
 {% endblock content %}

@@ -40,7 +40,7 @@
 
       {% if user.is_authenticated %}
       <span class="navbar-text">
-        Welcome {{ user.username }}
+       Welcome <a href="{% url 'accounts:edit' %}">{{ user.username }}</a>
       </span>
       {% endif %}
 

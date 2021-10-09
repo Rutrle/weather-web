@@ -15,7 +15,19 @@ class UserCreateForm(UserCreationForm):
         self.fields["email"].label = "Email address"
 
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        fields = ("username", "email")
+        model = get_user_model()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Username"
+        self.fields["email"].label = "Email address"
+
+
 class UserPreferenceForm(forms.ModelForm):
     class Meta:
         fields = ('user', 'degrees')
         model = UserPreference
+
