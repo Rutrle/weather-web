@@ -43,15 +43,25 @@ def login_view(request):
 def user_preference_update_view(request):
     user = get_object_or_404(get_user_model(), username=request.user.username)
     preference = get_object_or_404(UserPreference, user=user)
-    form = forms.UserUpdateForm(instance=user)
-    print(dir(user))
-    print(dir(form))
+    user_form = forms.UserUpdateForm(instance=user)
+    preference_form = forms.UserPreferenceForm(instance=preference)
+
+    if request.method == 'POST':
+        preference_form = forms.UserPreferenceForm(
+            request.POST, instance=preference)
+        user_form = forms.UserUpdateForm(request.POST, instance=user)
+        if preference_form.is_valid():
+            preference_form.save()
+
+        if user_form.is_valid():
+            user_form.save()
+
     print(user.username)
     print(preference.user.username)
 
     context = {'user': user.username,
-               'form': form,
-               'form2': form
+               'form': user_form,
+               'form2': preference_form
                }
     return render(request, 'accounts/edit.html', context)
 

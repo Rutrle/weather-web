@@ -28,6 +28,5 @@ class UserUpdateForm(forms.ModelForm):
 
 class UserPreferenceForm(forms.ModelForm):
     class Meta:
-        fields = ('user', 'degrees')
+        fields = ('degrees',)
         model = UserPreference
-
