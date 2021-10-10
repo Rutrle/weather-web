@@ -12,6 +12,7 @@ class UserPreference(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     degrees = models.CharField(
         max_length=255, choices=degrees_choices, default='C')
+    places = models.ManyToManyField('weather.Place')
 
     def __str__(self):
         return self.user.username + '_preferences'

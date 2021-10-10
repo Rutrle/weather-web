@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bootstrap4',
-    'weather.apps.WeatherConfig',
-    'accounts.apps.AccountsConfig',
+    'weather',
+    'accounts',
 ]
 
 MIDDLEWARE = [
