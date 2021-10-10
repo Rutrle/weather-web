@@ -59,8 +59,10 @@ def user_preference_update_view(request):
     print(user.username)
     print(preference.user.username)
     print(preference.places.all())
+
     for item in preference.places.all():
         print(item)
+
     context = {'user': user.username,
                'form': user_form,
                'form2': preference_form

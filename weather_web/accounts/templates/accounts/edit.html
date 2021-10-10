@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container">
-    <h1>{{user}}</h1>
+    <h1>My settings</h1>
     <form class = "mb-3" action="{% url 'accounts:edit' %}" method="POST">
         {{ form.as_p }}
         {% csrf_token %}
