@@ -17,8 +17,92 @@
       <p class="p-3"><strong>Latitude:</strong> {{place.latitude}}<strong> <br> Longtitude:</strong> {{place.longtitude}}</p>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
 {% endfor %}
 </div>
 
+
+
+<div class="container row p-5">
+  <div class="col-md-6">
+  <h2>{{place.name}}</h2>
+  <p>Longtitude {{place.longtitude}}</p>
+  <p>Latitude: {{place.latitude}}</p>
+  {% if place.author %}
+    <p> Author: {{place.author}}</p>
+  {% endif %}
+  <p>created: {{place.created_date}}</p>
+  </div>
+
+  <div class="col-md-6" style="width: 50%;">
+    <canvas id="forecast-chart"></canvas>
+  </div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+  <script>
+    var config = {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: {{temperatures_yr|safe}},
+          backgroundColor: [
+            "red"
+          ],
+          borderColor: "red",
+          fill: false,
+          label: 'Temperatures Yr.no'
+          },
+          {
+          data: {{temperatures_openweather|safe}},
+          backgroundColor: [
+            "green"
+          ],
+          borderColor: "green",
+          fill: false,
+          label: 'Temperatures Openweather'
+          },
+        ],
+        labels: {{dates|safe}}
+      },
+      options: {
+        responsive: true,
+            scales: {
+        y: {
+          grid:{
+            borderColor:"black"
+            },          
+          title: {
+            text:'°C',
+            display: true}
+        },
+        x: {
+          grid:{
+            borderColor:"black"
+            },
+          title: {
+            text:'dates',
+            display: true
+            }
+        }
+    }
+        
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('forecast-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>
 
 {% endblock content %}

@@ -10,6 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib import messages
 
 
+
 def sign_up_view(request):
     user_form = forms.UserCreateForm
     if request.method == 'POST':

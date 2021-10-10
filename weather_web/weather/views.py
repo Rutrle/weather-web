@@ -11,6 +11,7 @@ import datetime
 from collections import defaultdict
 from bs4 import BeautifulSoup
 import re
+from accounts.models import UserPreference
 
 
 class TestBaseView(generic.TemplateView):
@@ -47,9 +48,27 @@ class PlaceListView(generic.ListView):
 
 @login_required
 def my_place_list_view(request):
+    preferences = get_object_or_404(UserPreference, user=request.user)
+    favorite_places = preferences.places.all()
+    forecasts = {}
+    places = {}
+
+    for place in favorite_places:
+        print(place.name)
+        forecasts[place.name] = GetWeatherForecasts(
+            place.longtitude, place.latitude).weather_data
+        places[place.name] = {}
+        places[place.name]['latitude'] = float(place.latitude)
+        places[place.name]['longtitude'] = float(place.longtitude)
+
     queryset = Place.objects.filter(author=request.user)
-    print(queryset)
-    context = {'place_list': queryset}
+    print(places)
+    print(forecasts)
+
+    context = {'place_list': queryset,
+               'places': places,
+               'forecasts': forecasts
+               }
 
     return render(request, "weather/my_place_list.html", context)
 
@@ -161,7 +180,7 @@ class GetWeatherForecasts:
 
         max_length = max(len(
             dates_openweather), len(dates_yr))
-        print(max_length)
+        # print(max_length)
 
         if max_length == len(dates_yr):
             weather_data['dates'] = dates_yr
@@ -193,18 +212,18 @@ class GetWeatherForecasts:
 
         api_request = requests.get(url, params=parameters)
         api_request = api_request.json()
-        print(api_request)
+        # print(api_request)
         dates, temperatures = [], []
         for item in api_request['list']:
             date = item['dt']
             temperature = item['main']['temp']
 
             date = datetime.datetime.fromtimestamp(date)
-            print(date)
+            # print(date)
 
             dates.append(date)
             temperatures.append(temperature)
-        print('open', temperatures, dates)
+        #print('open', temperatures, dates)
         temperatures, dates = self.prepare_api_data(
             temperatures, dates)
 
