@@ -38,5 +38,5 @@ class UserPreferenceForm(forms.ModelForm):
     places = forms.ModelMultipleChoiceField(
         queryset=Place.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        label='My places'
+        label='My favorite places'
     )

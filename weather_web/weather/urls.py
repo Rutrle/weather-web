@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, place_detail_view, place_update_view, AboutView, place_delete_view, weather_forecast_test_view, my_place_list_view
+from .views import TestBaseView, WeatherIndexView, PlaceListView, PlaceCreateView, place_detail_view, place_update_view, AboutView, place_delete_view, my_place_list_view
 
 app_name = 'weather'
 
