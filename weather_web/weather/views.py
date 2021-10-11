@@ -129,18 +129,6 @@ class PlaceUpdateView(generic.UpdateView, LoginRequiredMixin):
         return reverse('weather:place_list')
 
 
-def weather_forecast_test_view(request):
-    print('praha')
-    try:
-        weather_forecast = GetWeatherForecasts('Praha')
-        weather_data = weather_forecast.weather_data
-        print(weather_data)
-    except:
-        pass
-
-    return render(request, "weather/weather_test.html", )
-
-
 class GetWeatherForecasts:
     """
     class for getting weather forecast from multiple sources
