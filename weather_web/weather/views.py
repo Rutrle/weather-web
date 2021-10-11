@@ -55,25 +55,24 @@ def my_place_list_view(request):
 
     for place in favorite_places:
         print(place.name)
-        forecasts[place.name] = GetWeatherForecasts(
+        forecasts[place.name] = {}
+        forecasts[place.name]['forecast'] = GetWeatherForecasts(
             place.longtitude, place.latitude).weather_data
-        places[place.name] = {}
-        places[place.name]['latitude'] = float(place.latitude)
-        places[place.name]['longtitude'] = float(place.longtitude)
+
+        forecasts[place.name]['latitude'] = float(place.latitude)
+        forecasts[place.name]['longtitude'] = float(place.longtitude)
 
     queryset = Place.objects.filter(author=request.user)
-    print(places)
+
     print(forecasts)
 
     context = {'place_list': queryset,
-               'places': places,
                'forecasts': forecasts
                }
 
     return render(request, "weather/my_place_list.html", context)
 
 
-@login_required
 def place_detail_view(request, pk):
     place = get_object_or_404(Place, pk=pk)
     weather_data = GetWeatherForecasts(place.longtitude, place.latitude)
