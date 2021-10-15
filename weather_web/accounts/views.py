@@ -6,9 +6,8 @@ from . import forms
 from django.views.generic import TemplateView
 from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
-
 
 
 def sign_up_view(request):
@@ -42,7 +41,7 @@ def login_view(request):
 
 @login_required
 def user_preference_update_view(request):
-    user = get_object_or_404(get_user_model(), username=request.user.username)
+    user = request.user
     preference = get_object_or_404(UserPreference, user=user)
     user_form = forms.UserUpdateForm(instance=user)
     preference_form = forms.UserPreferenceForm(instance=preference)
@@ -69,6 +68,15 @@ def user_preference_update_view(request):
                'form2': preference_form
                }
     return render(request, 'accounts/edit.html', context)
+
+
+@login_required
+def password_change(request):
+    form = PasswordChangeForm(user=request.user)
+    context = {
+        'form': form
+    }
+    return render(request, 'accounts/edit_password.html', context)
 
 
 @ login_required
