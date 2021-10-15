@@ -9,6 +9,8 @@
     <form class = "mb-3" action="{% url 'accounts:edit' %}" method="POST">
         {{ form.as_p }}
         {% csrf_token %}
+         <a href="{% url 'accounts:edit_password' %}"><button type="button" class="btn btn-primary m-3">Change password</button></a>
+        <hr>
         {{ form2.as_p }}
         {% csrf_token %}
         <input class="btn btn-primary" type="submit" value="Submit changes">
