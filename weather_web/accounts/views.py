@@ -72,9 +72,17 @@ def user_preference_update_view(request):
 
 @login_required
 def password_change(request):
-    form = PasswordChangeForm(user=request.user)
+    password_form = PasswordChangeForm(user=request.user)
+
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(
+            user=request.user, data=request.POST)
+        if password_form.is_valid():
+            password_form.save()
+            return redirect(reverse("accounts:login"))
+
     context = {
-        'form': form
+        'form': password_form
     }
     return render(request, 'accounts/edit_password.html', context)
 
