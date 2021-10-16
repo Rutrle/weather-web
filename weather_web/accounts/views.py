@@ -63,8 +63,7 @@ def user_preference_update_view(request):
     for item in preference.places.all():
         print(item)
 
-    context = {'user': user.username,
-               'form': user_form,
+    context = {'form': user_form,
                'form2': preference_form
                }
     return render(request, 'accounts/edit.html', context)
