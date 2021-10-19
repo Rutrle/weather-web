@@ -50,24 +50,28 @@ class PlaceListView(generic.ListView):
 def my_place_list_view(request):
     preferences = get_object_or_404(UserPreference, user=request.user)
     favorite_places = preferences.places.all()
-    forecasts = {}
-    places = {}
-
+    forecasts = []
+    place_id = 0
     for place in favorite_places:
         print(place.name)
-        forecasts[place.name] = {}
-        forecasts[place.name]['forecast'] = GetWeatherForecasts(
+        current_place = {}
+        current_place['name'] = place.name
+        current_place['id'] = place_id
+        place_id += 1
+        current_place['forecast'] = GetWeatherForecasts(
             place.longtitude, place.latitude).weather_data
 
-        forecasts[place.name]['latitude'] = float(place.latitude)
-        forecasts[place.name]['longtitude'] = float(place.longtitude)
+        current_place['latitude'] = float(place.latitude)
+        current_place['longtitude'] = float(place.longtitude)
+
+        forecasts.append(current_place)
 
     queryset = Place.objects.filter(author=request.user)
 
     print(forecasts)
 
     context = {'place_list': queryset,
-               'forecasts': forecasts
+               'forecasts': forecasts,
                }
 
     return render(request, "weather/my_place_list.html", context)
