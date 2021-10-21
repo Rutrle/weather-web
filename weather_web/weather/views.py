@@ -10,7 +10,7 @@ import requests
 import datetime
 from collections import defaultdict
 from bs4 import BeautifulSoup
-import re
+import json
 from accounts.models import UserPreference
 
 
@@ -69,9 +69,12 @@ def my_place_list_view(request):
     queryset = Place.objects.filter(author=request.user)
 
     print(forecasts)
+    forecasts_json = json.dumps(forecasts)
 
     context = {'place_list': queryset,
                'forecasts': forecasts,
+               'places_num': place_id,
+               'forecasts_json': forecasts_json
                }
 
     return render(request, "weather/my_place_list.html", context)

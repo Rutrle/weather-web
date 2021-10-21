@@ -1,38 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<p>{{forecasts}}</p>
 <div class='container p-3  col-md-4'>
     <a href="{% url 'weather:place_create' %}"><button type="button" class="btn btn-primary">Add new place!</button></a>
     <a href="{% url 'weather:place_list' %}"><button type="button" class="btn btn-primary">All places</button></a>
 </div>
-
-<div class='container p-3  col-md-6'>
 {% for place in forecasts %}
   <div class='container'>
-    <div class='card text-dark bg-light mb-4'>
-      <div class='card-header'>
-        <h5 class="card-title">{{place.name}}</h5>
-          <div class="col-md-6" style="width: 50%;">
-            <canvas id="forecast-chart"></canvas>
-          </div>      
-
-
-      
-      
-      </div>
-      <p class="p-3"><strong>Latitude:</strong> {{place.latitude}}<strong> <br> Longtitude:</strong> {{place.longtitude}}</p>
-    </div>
+      <h5 class="card-title">{{place.name}}</h5>
+        <div class="col-md-6" style="width: 50%;">
+          <canvas id="forecast-chart{{place.id}}"></canvas>
+        </div>
   </div>
-
+{% endfor %}
 
 
   <script>
-    var config = {
+  var config=[]
+  var forecasts={{forecasts_json|safe}}
+  console.log(forecasts[0]['forecast']['temperatures_yr'])
+for (var i=0; i<{{places_num}};++i){
+  config[i] = {
       type: 'line',
       data: {
         datasets: [{
-          data: {{place.forecast.temperatures_yr|safe}},
+          data: forecasts[i]['forecast']['temperatures_yr'],
           backgroundColor: [
             "red"
           ],
@@ -41,7 +34,7 @@
           label: 'Temperatures Yr.no'
           },
           {
-          data: {{place.forecast.temperatures_openweather|safe}},
+          data: forecasts[i]['forecast']['temperatures_openweather'],
           backgroundColor: [
             "green"
           ],
@@ -50,7 +43,7 @@
           label: 'Temperatures Openweather'
           },
         ],
-        labels: {{dates|safe}}
+        labels: forecasts[i]['forecast']['dates']
       },
       options: {
         responsive: true,
@@ -72,41 +65,30 @@
             display: true
             }
         }
-    }
-        
+      }
+    }   
+  }
+}
+
+
+
+var ctx=[];
+
+for (var i=0; i<{{places_num}};++i){
+  console.log('forecast-chart'+i)
+    ctx[i]=document.getElementById('forecast-chart'+i).getContext('2d');
+};
+
+
+    window.onload = function() {
+      for (var i=0; i<{{places_num}};++i){
+      window.myPie = new Chart(ctx[i], config[i]);
       }
     };
-    window.onload = function() {
-      var ctx = document.getElementById('forecast-chart').getContext('2d');
-      window.myPie = new Chart(ctx, config);
-    };
-
   </script>
-
-
-
-
-{% endfor %}
 </div>
-
-
-
-<div class="container row p-5">
-  <div class="col-md-6">
-  <h2>{{place.name}}</h2>
-  <p>Longtitude {{place.longtitude}}</p>
-  <p>Latitude: {{place.latitude}}</p>
-  {% if place.author %}
-    <p> Author: {{place.author}}</p>
-  {% endif %}
-  <p>created: {{place.created_date}}</p>
-  </div>
-
 
 </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
-
-
-
 
 {% endblock content %}
