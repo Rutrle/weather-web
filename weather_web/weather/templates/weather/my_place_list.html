@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>{{forecasts}}</p>
+
 <div class='container p-3  col-md-4'>
     <a href="{% url 'weather:place_create' %}"><button type="button" class="btn btn-primary">Add new place!</button></a>
     <a href="{% url 'weather:place_list' %}"><button type="button" class="btn btn-primary">All places</button></a>
 </div>
+
 {% for place in forecasts %}
   <div class='container'>
       <h5 class="card-title">{{place.name}}</h5>
@@ -16,61 +17,58 @@
 {% endfor %}
 
 
-  <script>
-  var config=[]
-  var forecasts={{forecasts_json|safe}}
-  console.log(forecasts[0]['forecast']['temperatures_yr'])
+<script>
+var config=[]
+var forecasts={{forecasts_json|safe}}
 for (var i=0; i<{{places_num}};++i){
   config[i] = {
-      type: 'line',
-      data: {
-        datasets: [{
-          data: forecasts[i]['forecast']['temperatures_yr'],
-          backgroundColor: [
-            "red"
-          ],
-          borderColor: "red",
-          fill: false,
-          label: 'Temperatures Yr.no'
-          },
-          {
-          data: forecasts[i]['forecast']['temperatures_openweather'],
-          backgroundColor: [
-            "green"
-          ],
-          borderColor: "green",
-          fill: false,
-          label: 'Temperatures Openweather'
-          },
+    type: 'line',
+    data: {
+      datasets: [{
+        data: forecasts[i]['forecast']['temperatures_yr'],
+        backgroundColor: [
+          "red"
         ],
-        labels: forecasts[i]['forecast']['dates']
-      },
-      options: {
-        responsive: true,
-            scales: {
-        y: {
-          grid:{
-            borderColor:"black"
-            },          
-          title: {
-            text:'°C',
-            display: true}
+        borderColor: "red",
+        fill: false,
+        label: 'Temperatures Yr.no'
         },
-        x: {
-          grid:{
-            borderColor:"black"
-            },
-          title: {
-            text:'dates',
-            display: true
-            }
+        {
+        data: forecasts[i]['forecast']['temperatures_openweather'],
+        backgroundColor: [
+          "green"
+        ],
+        borderColor: "green",
+        fill: false,
+        label: 'Temperatures Openweather'
+        },
+      ],
+      labels: forecasts[i]['forecast']['dates']
+    },
+    options: {
+      responsive: true,
+          scales: {
+      y: {
+        grid:{
+          borderColor:"black"
+          },          
+        title: {
+          text:'°C',
+          display: true}
+      },
+      x: {
+        grid:{
+          borderColor:"black"
+          },
+        title: {
+          text:'dates',
+          display: true
+          }
         }
       }
     }   
   }
 }
-
-
 
 var ctx=[];
 
@@ -80,15 +78,13 @@ for (var i=0; i<{{places_num}};++i){
 };
 
 
-    window.onload = function() {
-      for (var i=0; i<{{places_num}};++i){
-      window.myPie = new Chart(ctx[i], config[i]);
-      }
-    };
-  </script>
-</div>
-
-</div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+window.onload = function() {
+    for (var i=0; i<{{places_num}};++i){
+    window.myPie = new Chart(ctx[i], config[i]);
+    }
+  };
+</script>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 
 {% endblock content %}

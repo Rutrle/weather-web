@@ -49,26 +49,28 @@ class PlaceListView(generic.ListView):
 @login_required
 def my_place_list_view(request):
     preferences = get_object_or_404(UserPreference, user=request.user)
+
     favorite_places = preferences.places.all()
     forecasts = []
     place_id = 0
+
     for place in favorite_places:
-        print(place.name)
         current_place = {}
+
         current_place['name'] = place.name
         current_place['id'] = place_id
-        place_id += 1
+
         current_place['forecast'] = GetWeatherForecasts(
             place.longtitude, place.latitude).weather_data
 
         current_place['latitude'] = float(place.latitude)
         current_place['longtitude'] = float(place.longtitude)
 
+        place_id += 1
         forecasts.append(current_place)
 
     queryset = Place.objects.filter(author=request.user)
 
-    print(forecasts)
     forecasts_json = json.dumps(forecasts)
 
     context = {'place_list': queryset,
@@ -83,7 +85,6 @@ def my_place_list_view(request):
 def place_detail_view(request, pk):
     place = get_object_or_404(Place, pk=pk)
     weather_data = GetWeatherForecasts(place.longtitude, place.latitude)
-    print(weather_data.weather_data)
     context = {'place': place,
                'dates': weather_data.weather_data['dates'],
                'temperatures_yr': weather_data.weather_data['temperatures_yr'],
